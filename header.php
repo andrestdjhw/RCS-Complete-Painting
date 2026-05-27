@@ -6,8 +6,29 @@
     <?php wp_head(); ?>
   </head>
   <body <?php body_class(); ?>>
-    <div class="bg-gray-300">
-      <div class="max-w-4xl mx-auto mb-5 px-4">
-        <h1 class="text-3xl py-10"><a href="<?php echo get_home_url(); ?>" class="hover:text-blue-500">Welcome To Our Header!</a></h1>
-      </div>
-    </div>
+
+    <!-- Navbar React mount point -->
+    <div id="render-navbar-here"></div>
+
+    <!-- Offset para el header fixed:
+         ~108px con topbar visible / ~68px solo nav.
+         El JS ajusta dinámicamente según scroll. -->
+    <div id="navbar-spacer" style="height: 140px;"></div>
+
+    <script>
+      (function () {
+        var spacer   = document.getElementById('navbar-spacer');
+        var lastState = 'topbar';
+
+        function update() {
+          var scrolled = window.scrollY > 48;
+          var state    = scrolled ? 'nav' : 'topbar';
+          if (state === lastState) return;
+          lastState       = state;
+          spacer.style.height = scrolled ? '96px' : '140px';
+        }
+
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      })();
+    </script>
