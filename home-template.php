@@ -376,7 +376,7 @@ get_header(); ?>
 
           <!-- Subhead -->
           <p class="mb-3" style="font-size:16px; color:rgba(255,255,255,.78); line-height:1.75; max-width:460px;">
-            New construction multifamily painting is its own discipline. Production rates, MEP coordination, finish standards, draw schedules — they all depend on a painter who specializes in this work.
+            New construction multifamily painting is its own discipline. Production rates, MEP coordination, finish standards, draw schedules they all depend on a painter who specializes in this work.
           </p>
           <p class="mb-10" style="font-size:16px; color:rgba(255,255,255,.65); line-height:1.75; max-width:460px;">
             The partner GCs and developers across Texas trust to protect their schedule, deliver consistent finish quality, and communicate clearly from RFP through turnover.
@@ -412,7 +412,7 @@ get_header(); ?>
     </div>
 
     <!-- Bottom fade -->
-    <div class="absolute bottom-0 inset-x-0 h-16"
+    <div class="absolute bottom-0 inset-x-0 h-2"
       style="background: linear-gradient(to bottom, transparent, #F0EFED); z-index:1; pointer-events:none;"></div>
   </section>
 

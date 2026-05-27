@@ -3308,33 +3308,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// ── Navbar ──────────────────────────────────────────────────────────────────
-
-if (document.querySelector("#render-navbar-here")) {
-  const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(document.querySelector("#render-navbar-here"));
-  root.render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    logoUrl: window.rcsTheme?.logoUrl
-  }));
+function mountComponents() {
+  const navbarEl = document.querySelector("#render-navbar-here");
+  if (navbarEl) {
+    react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(navbarEl).render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      logoUrl: window.rcsTheme?.logoUrl
+    }));
+  }
+  const footerEl = document.querySelector("#render-footer-here");
+  if (footerEl) {
+    react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(footerEl).render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_Footer__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      logoUrl: window.rcsTheme?.logoUrl
+    }));
+  }
+  const heroFormEl = document.querySelector("#render-hero-form-here");
+  if (heroFormEl) {
+    react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(heroFormEl).render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_HeroBidForm__WEBPACK_IMPORTED_MODULE_4__["default"], {}));
+  }
+  const chatbotEl = document.querySelector("#render-chatbot-here");
+  if (chatbotEl) {
+    react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(chatbotEl).render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_RCSChatbot__WEBPACK_IMPORTED_MODULE_5__["default"], {}));
+  }
 }
 
-// ── Footer ──────────────────────────────────────────────────────────────────
-if (document.querySelector("#render-footer-here")) {
-  const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(document.querySelector("#render-footer-here"));
-  root.render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_Footer__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    logoUrl: window.rcsTheme?.logoUrl
-  }));
-}
-
-// ── Hero Bid Form ────────────────────────────────────────────────────────────
-if (document.querySelector("#render-hero-form-here")) {
-  const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(document.querySelector("#render-hero-form-here"));
-  root.render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_HeroBidForm__WEBPACK_IMPORTED_MODULE_4__["default"], {}));
-}
-
-// ── Chatbot (global — disponible en todas las páginas) ───────────────────────
-if (document.querySelector("#render-chatbot-here")) {
-  const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1___default().createRoot(document.querySelector("#render-chatbot-here"));
-  root.render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_scripts_RCSChatbot__WEBPACK_IMPORTED_MODULE_5__["default"], {}));
+// Espera a que el DOM esté listo antes de montar
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", mountComponents);
+} else {
+  mountComponents();
 }
 })();
 

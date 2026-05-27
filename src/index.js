@@ -6,26 +6,37 @@ import Footer      from "./scripts/Footer"
 import HeroBidForm from "./scripts/HeroBidForm"
 import RCSChatbot  from "./scripts/RCSChatbot"
 
-// ── Navbar ──────────────────────────────────────────────────────────────────
-if (document.querySelector("#render-navbar-here")) {
-  const root = ReactDOM.createRoot(document.querySelector("#render-navbar-here"))
-  root.render(<Navbar logoUrl={window.rcsTheme?.logoUrl} />)
+function mountComponents() {
+
+  const navbarEl = document.querySelector("#render-navbar-here")
+  if (navbarEl) {
+    ReactDOM.createRoot(navbarEl).render(
+      <Navbar logoUrl={window.rcsTheme?.logoUrl} />
+    )
+  }
+
+  const footerEl = document.querySelector("#render-footer-here")
+  if (footerEl) {
+    ReactDOM.createRoot(footerEl).render(
+      <Footer logoUrl={window.rcsTheme?.logoUrl} />
+    )
+  }
+
+  const heroFormEl = document.querySelector("#render-hero-form-here")
+  if (heroFormEl) {
+    ReactDOM.createRoot(heroFormEl).render(<HeroBidForm />)
+  }
+
+  const chatbotEl = document.querySelector("#render-chatbot-here")
+  if (chatbotEl) {
+    ReactDOM.createRoot(chatbotEl).render(<RCSChatbot />)
+  }
+
 }
 
-// ── Footer ──────────────────────────────────────────────────────────────────
-if (document.querySelector("#render-footer-here")) {
-  const root = ReactDOM.createRoot(document.querySelector("#render-footer-here"))
-  root.render(<Footer logoUrl={window.rcsTheme?.logoUrl} />)
-}
-
-// ── Hero Bid Form ────────────────────────────────────────────────────────────
-if (document.querySelector("#render-hero-form-here")) {
-  const root = ReactDOM.createRoot(document.querySelector("#render-hero-form-here"))
-  root.render(<HeroBidForm />)
-}
-
-// ── Chatbot (global — disponible en todas las páginas) ───────────────────────
-if (document.querySelector("#render-chatbot-here")) {
-  const root = ReactDOM.createRoot(document.querySelector("#render-chatbot-here"))
-  root.render(<RCSChatbot />)
+// Espera a que el DOM esté listo antes de montar
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", mountComponents)
+} else {
+  mountComponents()
 }

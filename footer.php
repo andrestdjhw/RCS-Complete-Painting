@@ -3,9 +3,9 @@
   <div id="render-footer-here"></div>
 </div>
 
-<?php wp_footer(); ?>
-
-<!-- Chatbot — global, disponible en todas las páginas -->
+<!-- Chatbot mount — DEBE ir antes de wp_footer() -->
 <div id="render-chatbot-here"></div>
+
+<?php wp_footer(); ?>
 </body>
 </html>
