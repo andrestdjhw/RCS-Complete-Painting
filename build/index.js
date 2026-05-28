@@ -620,6 +620,9 @@ const BRAND = {
   dim: "rgba(0,0,0,0.30)"
 };
 
+// Gradiente gris oscuro → rojo apagado (coherente con §2 del home)
+const RED_GRADIENT = "linear-gradient(135deg, #1A1A1A 0%, #2B2B2B 22%, #4a0000 52%, #8B0000 80%, #A80000 100%)";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // SVG Icons
 // ─────────────────────────────────────────────────────────────────────────────
@@ -828,7 +831,7 @@ function Footer({
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
       className: "relative overflow-hidden py-12 px-6",
       style: {
-        background: BRAND.red
+        background: RED_GRADIENT
       },
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
         style: {
@@ -837,7 +840,7 @@ function Footer({
           right: "-8%",
           width: "55%",
           height: "200%",
-          background: "rgba(0,0,0,0.06)",
+          background: "rgba(255,255,255,0.05)",
           borderRadius: "50%",
           pointerEvents: "none"
         }
@@ -2029,6 +2032,9 @@ const IconX = () => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1
 // ─────────────────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS = [{
+  label: "Home",
+  href: "/"
+}, {
   label: "About Us",
   href: "/about-us"
 }, {
@@ -2629,15 +2635,37 @@ function Navbar({
               })]
             })]
           });
-        })(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
+        })(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("a", {
           href: "/contact-us",
-          className: "hidden lg:inline-flex items-center px-5 py-2.5 text-white text-sm font-bold rounded-lg active:scale-95 transition-all duration-150 shadow-sm shrink-0",
+          className: "group relative hidden lg:inline-flex items-center gap-2 overflow-hidden px-5 py-2.5 text-white text-sm font-bold rounded-lg shadow-sm shrink-0 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(168,0,0,0.35)] active:scale-95",
           style: {
             background: BRAND.red
           },
-          onMouseEnter: e => e.currentTarget.style.background = BRAND.redDark,
-          onMouseLeave: e => e.currentTarget.style.background = BRAND.red,
-          children: "Contact Us"
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            "aria-hidden": "true",
+            className: "absolute inset-0 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0",
+            style: {
+              background: "linear-gradient(90deg, #A80000 0%, #7a0000 100%)"
+            }
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            "aria-hidden": "true",
+            className: "absolute top-0 bottom-0 -left-full w-1/2 -skew-x-12 bg-white/20 blur-[2px] transition-all duration-500 ease-out group-hover:left-full"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            className: "relative z-10",
+            children: "Contact Us"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("svg", {
+            width: "13",
+            height: "13",
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: "2.5",
+            "aria-hidden": "true",
+            className: "relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("polyline", {
+              points: "9,18 15,12 9,6"
+            })
+          })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
           className: "lg:hidden p-2 rounded-lg transition-colors duration-150",
           style: {
@@ -2728,15 +2756,37 @@ function Navbar({
             children: "Locations"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
             className: "pt-2",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("a", {
               href: "/contact",
-              className: "flex items-center justify-center w-full py-3 text-white text-sm font-bold rounded-xl active:scale-95 transition-all duration-150 shadow-sm",
+              className: "group relative flex items-center justify-center gap-2 w-full overflow-hidden py-3 text-white text-sm font-bold rounded-xl shadow-sm transition-all duration-300 ease-out hover:shadow-[0_8px_22px_rgba(168,0,0,0.35)] active:scale-95",
               style: {
                 background: BRAND.red
               },
-              onMouseEnter: e => e.currentTarget.style.background = BRAND.redDark,
-              onMouseLeave: e => e.currentTarget.style.background = BRAND.red,
-              children: "Contact Us"
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                "aria-hidden": "true",
+                className: "absolute inset-0 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0",
+                style: {
+                  background: "linear-gradient(90deg, #A80000 0%, #7a0000 100%)"
+                }
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                "aria-hidden": "true",
+                className: "absolute top-0 bottom-0 -left-full w-1/2 -skew-x-12 bg-white/20 blur-[2px] transition-all duration-500 ease-out group-hover:left-full"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                className: "relative z-10",
+                children: "Contact Us"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("svg", {
+                width: "13",
+                height: "13",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: "2.5",
+                "aria-hidden": "true",
+                className: "relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("polyline", {
+                  points: "9,18 15,12 9,6"
+                })
+              })]
             })
           })]
         })

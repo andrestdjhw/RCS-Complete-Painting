@@ -56,22 +56,10 @@ get_header(); ?>
     flex-shrink: 0;
   }
 
-  /* Swoosh diagonal — el elemento clave del flyer */
+  /* Swoosh section — el ::before fue reemplazado por el video de fondo + overlay */
   .swoosh-section {
     position: relative;
     overflow: hidden;
-  }
-  .swoosh-section::before {
-    content: '';
-    position: absolute;
-    top: -10%;
-    left: -8%;
-    width: 65%;
-    height: 130%;
-    background: linear-gradient(135deg, #1A1A1A 0%, #3a0000 55%, #CC0000 130%);
-    border-radius: 0 60% 60% 0 / 0 50% 50% 0;
-    transform: rotate(-3deg);
-    z-index: 0;
   }
 
   /* Light grid texture */
@@ -343,20 +331,36 @@ get_header(); ?>
 <main class="rcs-page">
 
   <!-- ═══════════════════════════════════════════════════════════
-       §1 — HERO  (swoosh rojo sobre fondo claro — estética flyer)
+       §1 — HERO  (video de fondo de medios WordPress + overlay rojo→carbón)
   ════════════════════════════════════════════════════════════ -->
   <section
     class="swoosh-section relative overflow-hidden"
     style="background: #F0EFED; min-height: 100vh;"
   >
+    <!-- VIDEO DE FONDO (medio de WordPress) -->
+    <!-- Reemplaza el src por la URL real del medio: Medios → "Copiar URL al portapapeles".
+         Para referencia dinámica usa wp_get_attachment_url( ID ) en lugar de la URL fija. -->
+    <video
+      class="absolute inset-0 w-full h-full"
+      style="object-fit:cover; z-index:0;"
+      autoplay muted loop playsinline
+      poster="/wp-content/uploads/hero-poster.jpg"
+      preload="metadata"
+    >
+      <source src="/wp-content/uploads/2026/05/VIDEO-2-RCS.mp4" type="video/mp4">
+    </video>
+
+    <!-- Overlay para legibilidad (sustituye al swoosh, mantiene el degradado rojo→carbón) -->
+    <div class="absolute inset-0" style="z-index:1; background:linear-gradient(135deg, rgba(26,26,26,.85) 0%, rgba(58,0,0,.70) 55%, rgba(204,0,0,.45) 130%);"></div>
+
     <!-- Paint texture -->
-    <div class="paint-texture absolute inset-0" style="pointer-events:none;"></div>
+    <div class="paint-texture absolute inset-0" style="pointer-events:none; z-index:2;"></div>
 
     <!-- Two-column grid -->
     <div class="relative z-10 max-w-7xl mx-auto px-6 pt-36 pb-24">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
 
-        <!-- ── LEFT: Headline (sobre el swoosh rojo) ── -->
+        <!-- ── LEFT: Headline (sobre el video/overlay) ── -->
         <div class="reveal">
 
           <!-- Eyebrow -->
@@ -417,7 +421,7 @@ get_header(); ?>
   <!-- ═══════════════════════════════════════════════════════════
        §2 — STATS STRIP
   ════════════════════════════════════════════════════════════ -->
-  <section style="background: linear-gradient(135deg, #8B0000 0%, #A80000 35%, #CC0000 70%, #E8231A 100%); border-top: none; position: relative; overflow: hidden;">
+  <section style="background: linear-gradient(135deg, #1A1A1A 0%, #2B2B2B 22%, #4a0000 52%, #8B0000 80%, #A80000 100%); border-top: none; position: relative; overflow: hidden;">
     <!-- Subtle diagonal texture overlay -->
     <div style="position:absolute;inset:0;background:linear-gradient(45deg,rgba(255,255,255,0.04) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.04) 50%,rgba(255,255,255,0.04) 75%,transparent 75%);background-size:40px 40px;pointer-events:none;"></div>
     <div class="max-w-7xl mx-auto px-6 py-16" style="position:relative;z-index:1;">
@@ -491,7 +495,7 @@ get_header(); ?>
 
           <!-- Floating stat -->
           <div class="absolute -top-5 -right-5 hidden lg:flex flex-col items-center justify-center text-center"
-            style="width:120px;height:120px;background:var(--red);border-radius:12px;box-shadow:0 20px 60px rgba(204,0,0,.4);">
+            style="width:120px;height:120px;background:linear-gradient(135deg, #2B2B2B 0%, #5a0000 55%, #A80000 100%);border-radius:12px;box-shadow:0 20px 60px rgba(168,0,0,.35);">
             <span class="rcs-display" style="font-size:38px;font-weight:900;line-height:1;">30<span style="font-size:22px;">+</span></span>
             <span style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600;line-height:1.3;margin-top:4px;">Years<br>Experience</span>
           </div>

@@ -76,6 +76,10 @@ const IconX = () => (
 
 const NAV_ITEMS = [
   {
+    label: "Home",
+    href: "/",
+  },
+  {
     label: "About Us",
     href: "/about-us",
   },
@@ -465,15 +469,32 @@ function Navbar({ logoUrl }) {
             )
           })()}
 
-          {/* CTA — right (desktop) */}
+          {/* CTA — right (desktop) — con animación de hover */}
           <a
             href="/contact-us"
-            className="hidden lg:inline-flex items-center px-5 py-2.5 text-white text-sm font-bold rounded-lg active:scale-95 transition-all duration-150 shadow-sm shrink-0"
+            className="group relative hidden lg:inline-flex items-center gap-2 overflow-hidden px-5 py-2.5 text-white text-sm font-bold rounded-lg shadow-sm shrink-0 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(168,0,0,0.35)] active:scale-95"
             style={{ background: BRAND.red }}
-            onMouseEnter={e => e.currentTarget.style.background = BRAND.redDark}
-            onMouseLeave={e => e.currentTarget.style.background = BRAND.red}
           >
-            Contact Us
+            {/* Capa de rojo profundo que entra desde la izquierda */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
+              style={{ background: "linear-gradient(90deg, #A80000 0%, #7a0000 100%)" }}
+            />
+            {/* Brillo diagonal que barre el botón */}
+            <span
+              aria-hidden="true"
+              className="absolute top-0 bottom-0 -left-full w-1/2 -skew-x-12 bg-white/20 blur-[2px] transition-all duration-500 ease-out group-hover:left-full"
+            />
+            <span className="relative z-10">Contact Us</span>
+            <svg
+              width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" strokeWidth="2.5"
+              aria-hidden="true"
+              className="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1"
+            >
+              <polyline points="9,18 15,12 9,6" />
+            </svg>
           </a>
 
           {/* Mobile hamburger */}
@@ -563,14 +584,30 @@ function Navbar({ logoUrl }) {
             </a>
 
             <div className="pt-2">
+              {/* CTA mobile — misma animación de hover */}
               <a
                 href="/contact"
-                className="flex items-center justify-center w-full py-3 text-white text-sm font-bold rounded-xl active:scale-95 transition-all duration-150 shadow-sm"
+                className="group relative flex items-center justify-center gap-2 w-full overflow-hidden py-3 text-white text-sm font-bold rounded-xl shadow-sm transition-all duration-300 ease-out hover:shadow-[0_8px_22px_rgba(168,0,0,0.35)] active:scale-95"
                 style={{ background: BRAND.red }}
-                onMouseEnter={e => e.currentTarget.style.background = BRAND.redDark}
-                onMouseLeave={e => e.currentTarget.style.background = BRAND.red}
               >
-                Contact Us
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
+                  style={{ background: "linear-gradient(90deg, #A80000 0%, #7a0000 100%)" }}
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute top-0 bottom-0 -left-full w-1/2 -skew-x-12 bg-white/20 blur-[2px] transition-all duration-500 ease-out group-hover:left-full"
+                />
+                <span className="relative z-10">Contact Us</span>
+                <svg
+                  width="13" height="13" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2.5"
+                  aria-hidden="true"
+                  className="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1"
+                >
+                  <polyline points="9,18 15,12 9,6" />
+                </svg>
               </a>
             </div>
           </div>

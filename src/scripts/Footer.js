@@ -18,6 +18,9 @@ const BRAND = {
   dim:       "rgba(0,0,0,0.30)",
 }
 
+// Gradiente gris oscuro → rojo apagado (coherente con §2 del home)
+const RED_GRADIENT = "linear-gradient(135deg, #1A1A1A 0%, #2B2B2B 22%, #4a0000 52%, #8B0000 80%, #A80000 100%)"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // SVG Icons
 // ─────────────────────────────────────────────────────────────────────────────
@@ -151,16 +154,16 @@ function Footer({ logoUrl }) {
   return (
     <footer style={{ fontFamily: "'DM Sans', sans-serif", background: BRAND.bg }}>
 
-      {/* ── CTA Banner — rojo sólido (igual al CTA final del home) ─────────── */}
+      {/* ── CTA Banner — gradiente gris oscuro → rojo apagado (coherente con el home) ─ */}
       <div
         className="relative overflow-hidden py-12 px-6"
-        style={{ background: BRAND.red }}
+        style={{ background: RED_GRADIENT }}
       >
         {/* Círculo decorativo de fondo */}
         <div style={{
           position: "absolute", top: "-40%", right: "-8%",
           width: "55%", height: "200%",
-          background: "rgba(0,0,0,0.06)", borderRadius: "50%",
+          background: "rgba(255,255,255,0.05)", borderRadius: "50%",
           pointerEvents: "none",
         }} />
 

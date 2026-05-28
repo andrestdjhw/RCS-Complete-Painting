@@ -141,16 +141,31 @@ get_header(); ?>
 <main class="rcs-page">
 
   <!-- ════════════════════════════════════════════════════════
-       §1 — HERO
+       §1 — HERO  (video de fondo de medios WordPress + overlay)
   ═══════════════════════════════════════════════════════════ -->
   <section
     class="relative overflow-hidden"
-    style="background: linear-gradient(135deg, #1A1A1A 0%, #3a0000 55%, #CC0000 130%); min-height: 520px; display: flex; align-items: center;"
+    style="background: #1A1A1A; min-height: 520px; display: flex; align-items: center;"
   >
+    <!-- VIDEO DE FONDO (medio de WordPress) -->
+    <!-- Reemplaza el src por la URL real del medio: Medios → "Copiar URL al portapapeles". -->
+    <video
+      class="absolute inset-0 w-full h-full"
+      style="object-fit:cover;z-index:0;"
+      autoplay muted loop playsinline
+      poster="/wp-content/uploads/about-hero-poster.jpg"
+      preload="metadata"
+    >
+      <source src="/wp-content/uploads/2026/05/VIDEO-3-RCS.mp4" type="video/mp4">
+    </video>
+
+    <!-- Overlay gris oscuro → rojo apagado (legibilidad + conserva el look del hero) -->
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(26,26,26,.90) 0%,rgba(58,0,0,.72) 55%,rgba(168,0,0,.50) 130%);pointer-events:none;"></div>
+
     <!-- Diagonal texture -->
-    <div style="position:absolute;inset:0;background-image:linear-gradient(45deg,rgba(255,255,255,0.03) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.03) 50%,rgba(255,255,255,0.03) 75%,transparent 75%);background-size:32px 32px;pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;z-index:2;background-image:linear-gradient(45deg,rgba(255,255,255,0.03) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.03) 50%,rgba(255,255,255,0.03) 75%,transparent 75%);background-size:32px 32px;pointer-events:none;"></div>
     <!-- Red glow -->
-    <div style="position:absolute;top:-20%;right:-10%;width:60%;height:140%;background:radial-gradient(ellipse,rgba(204,0,0,0.25) 0%,transparent 65%);pointer-events:none;"></div>
+    <div style="position:absolute;top:-20%;right:-10%;width:60%;height:140%;z-index:2;background:radial-gradient(ellipse,rgba(204,0,0,0.25) 0%,transparent 65%);pointer-events:none;"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-6 py-28">
       <div class="max-w-3xl reveal">
