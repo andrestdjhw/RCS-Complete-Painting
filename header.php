@@ -10,25 +10,27 @@
     <!-- Navbar React mount point -->
     <div id="render-navbar-here"></div>
 
-    <!-- Offset para el header fixed:
-         ~108px con topbar visible / ~68px solo nav.
-         El JS ajusta dinámicamente según scroll. -->
+    <!-- Spacer dinámico: compensa navbar fixed + admin bar de WordPress -->
     <div id="navbar-spacer" style="height: 140px;"></div>
 
     <script>
       (function () {
-        var spacer   = document.getElementById('navbar-spacer');
-        var lastState = 'topbar';
+        var spacer = document.getElementById('navbar-spacer');
+
+        function getAdminBarH() {
+          var bar = document.getElementById('wpadminbar');
+          return bar ? bar.offsetHeight : 0;
+        }
 
         function update() {
-          var scrolled = window.scrollY > 48;
-          var state    = scrolled ? 'nav' : 'topbar';
-          if (state === lastState) return;
-          lastState       = state;
-          spacer.style.height = scrolled ? '96px' : '140px';
+          var scrolled  = window.scrollY > 48;
+          var adminBarH = getAdminBarH();
+          var navH      = scrolled ? 108 : 152;
+          spacer.style.height = (adminBarH + navH) + 'px';
         }
 
         window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
         update();
       })();
     </script>

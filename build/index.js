@@ -2029,33 +2029,75 @@ const IconX = () => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1
 // ─────────────────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS = [{
-  label: "Home",
-  href: "/"
-}, {
   label: "About Us",
-  href: "/about"
+  href: "/about-us"
 }, {
   label: "Services",
   href: "/services",
   children: [{
     label: "Interior Painting",
-    href: "/services/interior",
-    desc: "Commercial & residential interiors"
+    href: "/services/multifamily-interior-painting",
+    desc: "New unit production at scale — prep, prime, finish and punch on schedules GCs can plan around.",
+    icon: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("svg", {
+      width: "18",
+      height: "18",
+      fill: "none",
+      stroke: "#CC0000",
+      strokeWidth: "1.75",
+      viewBox: "0 0 24 24",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("rect", {
+        x: "3",
+        y: "3",
+        width: "18",
+        height: "18",
+        rx: "2"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("path", {
+        d: "M3 9h18M9 21V9"
+      })]
+    })
   }, {
     label: "Exterior Painting",
-    href: "/services/exterior",
-    desc: "Curb appeal & weather protection"
+    href: "/services/multifamily-exterior-painting",
+    desc: "Weather-resistant systems for stucco, fiber cement and architectural metals. Boom lift certified.",
+    icon: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("svg", {
+      width: "18",
+      height: "18",
+      fill: "none",
+      stroke: "#CC0000",
+      strokeWidth: "1.75",
+      viewBox: "0 0 24 24",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("path", {
+        d: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("polyline", {
+        points: "9 22 9 12 15 12 15 22"
+      })]
+    })
   }, {
     label: "Specialty Coatings",
-    href: "/services/specialty",
-    desc: "Epoxy, texture & custom finishes"
+    href: "/services/specialty-coatings",
+    desc: "Electrostatic painting for metals and color consulting for developers selecting palettes.",
+    icon: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("svg", {
+      width: "18",
+      height: "18",
+      fill: "none",
+      stroke: "#CC0000",
+      strokeWidth: "1.75",
+      viewBox: "0 0 24 24",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("circle", {
+        cx: "12",
+        cy: "12",
+        r: "3"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("path", {
+        d: "M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"
+      })]
+    })
   }]
 }, {
   label: "Locations",
   href: "/locations"
 }, {
   label: "Contact Us",
-  href: "/contact",
+  href: "/contact-us",
   isCta: true
 }];
 
@@ -2077,7 +2119,27 @@ function Navbar({
   const [activeDropdown, setActiveDropdown] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [mobileOpen, setMobileOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [mobileServicesOpen, setMobileServicesOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [adminBarH, setAdminBarH] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
   const navRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const closeTimer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+
+  // ── Detecta el admin bar de WordPress ──
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const checkAdminBar = () => {
+      const bar = document.getElementById("wpadminbar");
+      setAdminBarH(bar ? bar.offsetHeight : 0);
+    };
+    checkAdminBar();
+    window.addEventListener("resize", checkAdminBar);
+    return () => window.removeEventListener("resize", checkAdminBar);
+  }, []);
+  const openMenu = label => {
+    clearTimeout(closeTimer.current);
+    setActiveDropdown(label);
+  };
+  const closeMenu = () => {
+    closeTimer.current = setTimeout(() => setActiveDropdown(null), 120);
+  };
 
   // ── Scroll detection ──
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -2086,6 +2148,11 @@ function Navbar({
       passive: true
     });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // ── Clear timer on unmount ──
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    return () => clearTimeout(closeTimer.current);
   }, []);
 
   // ── Close dropdown on outside click ──
@@ -2108,7 +2175,10 @@ function Navbar({
     return () => window.removeEventListener("resize", onResize);
   }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("header", {
-    className: "fixed top-0 inset-x-0 z-50",
+    className: "fixed inset-x-0 z-[9998]",
+    style: {
+      top: `${adminBarH}px`
+    },
     ref: navRef,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       className: `
@@ -2201,7 +2271,7 @@ function Navbar({
           ${scrolled ? "shadow-lg shadow-black/10" : ""}
         `,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-        className: "max-w-7xl mx-auto px-6 h-[100px] flex items-center justify-between",
+        className: "max-w-7xl mx-auto px-6 h-[108px] flex items-center justify-between relative",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
           href: "/",
           className: "flex items-center shrink-0 group",
@@ -2209,7 +2279,7 @@ function Navbar({
           children: logoUrl ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
             src: logoUrl,
             alt: "RCS Complete Painting LLC",
-            className: "h-30 w-auto object-contain transition-opacity duration-150 group-hover:opacity-85"
+            className: "h-24 w-auto object-contain transition-opacity duration-150 group-hover:opacity-85"
           }) :
           /*#__PURE__*/
           /* Fallback si no hay logoUrl */
@@ -2242,95 +2312,35 @@ function Navbar({
             })]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("ul", {
-          className: "hidden lg:flex items-center gap-0.5",
+          className: "hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2",
           children: NAV_ITEMS.map(item => {
-            // CTA button — Contact Us
-            if (item.isCta) {
+            // CTA — se renderiza fuera del ul, no dentro del map
+            if (item.isCta) return null;
+
+            // Mega Menu — Services
+            if (item.children) {
+              const isOpen = activeDropdown === item.label;
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
-                  href: item.href,
-                  className: "ml-3 inline-flex items-center px-5 py-2.5 text-white text-sm font-bold rounded-lg active:scale-95 transition-all duration-150 shadow-sm",
+                onMouseEnter: () => openMenu(item.label),
+                onMouseLeave: closeMenu,
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("button", {
+                  onClick: () => isOpen ? setActiveDropdown(null) : openMenu(item.label),
+                  className: "flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-150",
                   style: {
-                    background: BRAND.red
+                    color: isOpen ? BRAND.red : BRAND.charcoal,
+                    background: isOpen ? BRAND.redLight : "transparent"
                   },
-                  onMouseEnter: e => e.currentTarget.style.background = BRAND.redDark,
-                  onMouseLeave: e => e.currentTarget.style.background = BRAND.red,
-                  children: item.label
+                  "aria-expanded": isOpen,
+                  "aria-haspopup": "true",
+                  children: [item.label, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(IconChevronDown, {
+                    className: `transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`
+                  })]
                 })
               }, item.label);
             }
 
-            // Dropdown — Services
-            if (item.children) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("li", {
-                className: "relative",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("button", {
-                  onMouseEnter: () => setActiveDropdown(item.label),
-                  onMouseLeave: () => setActiveDropdown(null),
-                  onClick: () => setActiveDropdown(activeDropdown === item.label ? null : item.label),
-                  className: "flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-150",
-                  style: {
-                    color: BRAND.charcoal
-                  },
-                  onMouseEnterCapture: e => {
-                    e.currentTarget.style.color = BRAND.red;
-                    e.currentTarget.style.background = BRAND.redLight;
-                  },
-                  onMouseLeaveCapture: e => {
-                    e.currentTarget.style.color = BRAND.charcoal;
-                    e.currentTarget.style.background = "transparent";
-                  },
-                  "aria-expanded": activeDropdown === item.label,
-                  "aria-haspopup": "true",
-                  children: [item.label, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(IconChevronDown, {
-                    className: `transition-transform duration-200 ${activeDropdown === item.label ? "rotate-180" : ""}`
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-                  onMouseEnter: () => setActiveDropdown(item.label),
-                  onMouseLeave: () => setActiveDropdown(null),
-                  className: `
-                        absolute top-full left-0 pt-1.5
-                        transition-all duration-200 origin-top-left
-                        ${activeDropdown === item.label ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}
-                      `,
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-                    className: "w-60 bg-white rounded-xl border border-slate-100 shadow-xl shadow-black/10 overflow-hidden",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-                      className: "p-1.5",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
-                        href: item.href,
-                        className: "flex items-center px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-slate-400 rounded-lg transition-colors duration-150 hover:bg-slate-50",
-                        style: {
-                          "--hover-color": BRAND.red
-                        },
-                        onMouseEnter: e => e.currentTarget.style.color = BRAND.red,
-                        onMouseLeave: e => e.currentTarget.style.color = "",
-                        children: "All Services \u2192"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-                        className: "h-px bg-slate-100 mx-2 my-1"
-                      }), item.children.map(child => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("a", {
-                        href: child.href,
-                        className: "flex flex-col px-3 py-2.5 rounded-lg transition-colors duration-150 group/item",
-                        onMouseEnter: e => e.currentTarget.style.background = BRAND.redLight,
-                        onMouseLeave: e => e.currentTarget.style.background = "transparent",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-                          className: "text-sm font-semibold transition-colors duration-150",
-                          style: {
-                            color: BRAND.charcoal
-                          },
-                          children: child.label
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-                          className: "text-xs text-slate-400 mt-0.5",
-                          children: child.desc
-                        })]
-                      }, child.label))]
-                    })
-                  })
-                })]
-              }, item.label);
-            }
-
-            // Regular nav link
+            // Regular nav link — skip CTA (se renderiza fuera del ul)
+            if (item.isCta) return null;
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("li", {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
                 href: item.href,
@@ -2350,6 +2360,284 @@ function Navbar({
               })
             }, item.label);
           })
+        }), (() => {
+          const servicesItem = NAV_ITEMS.find(i => i.children);
+          const isOpen = activeDropdown === servicesItem?.label;
+          if (!servicesItem) return null;
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            onMouseEnter: () => openMenu(servicesItem.label),
+            onMouseLeave: closeMenu,
+            style: {
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              right: 0,
+              zIndex: 9999,
+              transition: "opacity .2s, transform .2s",
+              opacity: isOpen ? 1 : 0,
+              transform: isOpen ? "translateY(0)" : "translateY(-4px)",
+              pointerEvents: isOpen ? "auto" : "none"
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+              style: {
+                height: "1px",
+                background: "rgba(0,0,0,0.08)"
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+              style: {
+                background: "#ffffff",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+                borderTop: "3px solid #CC0000"
+              },
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                style: {
+                  maxWidth: "80rem",
+                  margin: "0 auto",
+                  padding: "20px 32px"
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                  style: {
+                    display: "flex",
+                    gap: "12px",
+                    alignItems: "stretch"
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                    style: {
+                      flex: 1,
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gap: "10px"
+                    },
+                    children: servicesItem.children.map(child => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("a", {
+                      href: child.href,
+                      style: {
+                        textDecoration: "none",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                        padding: "14px",
+                        borderRadius: "10px",
+                        border: "1px solid rgba(0,0,0,0.07)",
+                        background: "#ffffff",
+                        transition: "all .15s"
+                      },
+                      onMouseEnter: e => {
+                        e.currentTarget.style.background = BRAND.redLight;
+                        e.currentTarget.style.borderColor = "rgba(204,0,0,0.25)";
+                      },
+                      onMouseLeave: e => {
+                        e.currentTarget.style.background = "#ffffff";
+                        e.currentTarget.style.borderColor = "rgba(0,0,0,0.07)";
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                        style: {
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px"
+                        },
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                          style: {
+                            width: "34px",
+                            height: "34px",
+                            borderRadius: "8px",
+                            background: "rgba(204,0,0,0.08)",
+                            border: "1px solid rgba(204,0,0,0.18)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0
+                          },
+                          children: child.icon
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                          style: {
+                            fontSize: "13px",
+                            fontWeight: 800,
+                            color: BRAND.charcoal,
+                            fontFamily: "'Montserrat', sans-serif"
+                          },
+                          children: child.label
+                        })]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+                        style: {
+                          fontSize: "12px",
+                          color: "rgba(0,0,0,0.48)",
+                          lineHeight: 1.55,
+                          margin: 0
+                        },
+                        children: child.desc
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
+                        style: {
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: ".06em",
+                          color: BRAND.red,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          marginTop: "auto"
+                        },
+                        children: ["Learn more", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("svg", {
+                          width: "10",
+                          height: "10",
+                          fill: "none",
+                          stroke: "currentColor",
+                          strokeWidth: "2.5",
+                          viewBox: "0 0 24 24",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("polyline", {
+                            points: "9,18 15,12 9,6"
+                          })
+                        })]
+                      })]
+                    }, child.label))
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                    style: {
+                      width: "1px",
+                      background: "rgba(0,0,0,0.07)",
+                      flexShrink: 0
+                    }
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                    style: {
+                      width: "200px",
+                      flexShrink: 0,
+                      borderRadius: "10px",
+                      padding: "16px",
+                      background: `linear-gradient(135deg, ${BRAND.charcoal} 0%, #3a0000 55%, ${BRAND.red} 130%)`,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between"
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+                        style: {
+                          fontSize: "9px",
+                          fontWeight: 900,
+                          letterSpacing: ".2em",
+                          textTransform: "uppercase",
+                          color: "rgba(255,255,255,.5)",
+                          marginBottom: "6px"
+                        },
+                        children: "Ready to bid?"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+                        style: {
+                          fontSize: "14px",
+                          fontWeight: 900,
+                          color: "#fff",
+                          lineHeight: 1.2,
+                          marginBottom: "8px",
+                          fontFamily: "'Montserrat', sans-serif"
+                        },
+                        children: ["On-site walk", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                          style: {
+                            color: "rgba(255,255,255,.6)"
+                          },
+                          children: "within 72 hrs."
+                        })]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+                        style: {
+                          fontSize: "11px",
+                          color: "rgba(255,255,255,.5)",
+                          lineHeight: 1.5
+                        },
+                        children: "Line-item bid in 5 business days."
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                      style: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                        marginTop: "14px"
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
+                        href: "/contact-us",
+                        style: {
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: "8px",
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          textTransform: "uppercase",
+                          letterSpacing: ".06em",
+                          background: "#fff",
+                          color: BRAND.red,
+                          borderRadius: "7px",
+                          textDecoration: "none"
+                        },
+                        onMouseEnter: e => e.currentTarget.style.background = "#fff0f0",
+                        onMouseLeave: e => e.currentTarget.style.background = "#fff",
+                        children: "Request a bid \u2192"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
+                        href: servicesItem.href,
+                        style: {
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: "7px",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: ".06em",
+                          background: "rgba(255,255,255,.10)",
+                          color: "rgba(255,255,255,.75)",
+                          border: "1px solid rgba(255,255,255,.18)",
+                          borderRadius: "7px",
+                          textDecoration: "none"
+                        },
+                        onMouseEnter: e => e.currentTarget.style.background = "rgba(255,255,255,.18)",
+                        onMouseLeave: e => e.currentTarget.style.background = "rgba(255,255,255,.10)",
+                        children: "All Services"
+                      })]
+                    })]
+                  })]
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                style: {
+                  borderTop: "1px solid rgba(0,0,0,0.06)",
+                  background: "#F6F6F4"
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                  style: {
+                    maxWidth: "80rem",
+                    margin: "0 auto",
+                    padding: "8px 32px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "16px",
+                    overflowX: "auto"
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                    style: {
+                      fontSize: "10px",
+                      fontWeight: 800,
+                      letterSpacing: ".18em",
+                      textTransform: "uppercase",
+                      color: "rgba(0,0,0,0.28)",
+                      flexShrink: 0
+                    },
+                    children: "Serving:"
+                  }), ["Austin, TX", "Houston, TX", "Dallas–Fort Worth", "San Antonio, TX", "Oklahoma", "Louisiana", "Arkansas", "New Mexico"].map(loc => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                    style: {
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      color: "rgba(0,0,0,0.40)",
+                      flexShrink: 0
+                    },
+                    children: loc
+                  }, loc))]
+                })
+              })]
+            })]
+          });
+        })(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
+          href: "/contact-us",
+          className: "hidden lg:inline-flex items-center px-5 py-2.5 text-white text-sm font-bold rounded-lg active:scale-95 transition-all duration-150 shadow-sm shrink-0",
+          style: {
+            background: BRAND.red
+          },
+          onMouseEnter: e => e.currentTarget.style.background = BRAND.redDark,
+          onMouseLeave: e => e.currentTarget.style.background = BRAND.red,
+          children: "Contact Us"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
           className: "lg:hidden p-2 rounded-lg transition-colors duration-150",
           style: {

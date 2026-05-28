@@ -76,12 +76,8 @@ const IconX = () => (
 
 const NAV_ITEMS = [
   {
-    label: "Home",
-    href: "/",
-  },
-  {
     label: "About Us",
-    href: "/about",
+    href: "/about-us",
   },
   {
     label: "Services",
@@ -89,18 +85,33 @@ const NAV_ITEMS = [
     children: [
       {
         label: "Interior Painting",
-        href: "/services/interior",
-        desc: "Commercial & residential interiors",
+        href: "/services/multifamily-interior-painting",
+        desc: "New unit production at scale — prep, prime, finish and punch on schedules GCs can plan around.",
+        icon: (
+          <svg width="18" height="18" fill="none" stroke="#CC0000" strokeWidth="1.75" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+          </svg>
+        ),
       },
       {
         label: "Exterior Painting",
-        href: "/services/exterior",
-        desc: "Curb appeal & weather protection",
+        href: "/services/multifamily-exterior-painting",
+        desc: "Weather-resistant systems for stucco, fiber cement and architectural metals. Boom lift certified.",
+        icon: (
+          <svg width="18" height="18" fill="none" stroke="#CC0000" strokeWidth="1.75" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        ),
       },
       {
         label: "Specialty Coatings",
-        href: "/services/specialty",
-        desc: "Epoxy, texture & custom finishes",
+        href: "/services/specialty-coatings",
+        desc: "Electrostatic painting for metals and color consulting for developers selecting palettes.",
+        icon: (
+          <svg width="18" height="18" fill="none" stroke="#CC0000" strokeWidth="1.75" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+          </svg>
+        ),
       },
     ],
   },
@@ -110,7 +121,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Contact Us",
-    href: "/contact",
+    href: "/contact-us",
     isCta: true,
   },
 ]
@@ -131,13 +142,39 @@ function Navbar({ logoUrl }) {
   const [activeDropdown, setActiveDropdown]         = useState(null)
   const [mobileOpen, setMobileOpen]                 = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
-  const navRef = useRef(null)
+  const [adminBarH, setAdminBarH]                   = useState(0)
+  const navRef     = useRef(null)
+  const closeTimer = useRef(null)
+
+  // ── Detecta el admin bar de WordPress ──
+  useEffect(() => {
+    const checkAdminBar = () => {
+      const bar = document.getElementById("wpadminbar")
+      setAdminBarH(bar ? bar.offsetHeight : 0)
+    }
+    checkAdminBar()
+    window.addEventListener("resize", checkAdminBar)
+    return () => window.removeEventListener("resize", checkAdminBar)
+  }, [])
+
+  const openMenu  = (label) => {
+    clearTimeout(closeTimer.current)
+    setActiveDropdown(label)
+  }
+  const closeMenu = () => {
+    closeTimer.current = setTimeout(() => setActiveDropdown(null), 120)
+  }
 
   // ── Scroll detection ──
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  // ── Clear timer on unmount ──
+  useEffect(() => {
+    return () => clearTimeout(closeTimer.current)
   }, [])
 
   // ── Close dropdown on outside click ──
@@ -159,7 +196,11 @@ function Navbar({ logoUrl }) {
   }, [])
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50" ref={navRef}>
+    <header
+      className="fixed inset-x-0 z-[9998]"
+      style={{ top: `${adminBarH}px` }}
+      ref={navRef}
+    >
 
       {/* ── Topbar ────────────────────────────────────────────────────────── */}
       <div
@@ -234,15 +275,15 @@ function Navbar({ logoUrl }) {
           ${scrolled ? "shadow-lg shadow-black/10" : ""}
         `}
       >
-        <div className="max-w-7xl mx-auto px-6 h-[100px] flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-[108px] flex items-center justify-between relative">
 
-          {/* Logo */}
+          {/* Logo — left */}
           <a href="/" className="flex items-center shrink-0 group" aria-label="RCS Complete Painting — Home">
             {logoUrl ? (
               <img
                 src={logoUrl}
                 alt="RCS Complete Painting LLC"
-                className="h-30 w-auto object-contain transition-opacity duration-150 group-hover:opacity-85"
+                className="h-24 w-auto object-contain transition-opacity duration-150 group-hover:opacity-85"
               />
             ) : (
               /* Fallback si no hay logoUrl */
@@ -263,97 +304,43 @@ function Navbar({ logoUrl }) {
             )}
           </a>
 
-          {/* Desktop Nav Links */}
-          <ul className="hidden lg:flex items-center gap-0.5">
+          {/* Desktop Nav Links — center (absolute) */}
+          <ul className="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
             {NAV_ITEMS.map((item) => {
 
-              // CTA button — Contact Us
-              if (item.isCta) {
-                return (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="ml-3 inline-flex items-center px-5 py-2.5 text-white text-sm font-bold rounded-lg active:scale-95 transition-all duration-150 shadow-sm"
-                      style={{ background: BRAND.red }}
-                      onMouseEnter={e => e.currentTarget.style.background = BRAND.redDark}
-                      onMouseLeave={e => e.currentTarget.style.background = BRAND.red}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                )
-              }
+              // CTA — se renderiza fuera del ul, no dentro del map
+              if (item.isCta) return null
 
-              // Dropdown — Services
+              // Mega Menu — Services
               if (item.children) {
+                const isOpen = activeDropdown === item.label
                 return (
-                  <li key={item.label} className="relative">
+                  <li key={item.label}
+                    onMouseEnter={() => openMenu(item.label)}
+                    onMouseLeave={closeMenu}
+                  >
                     <button
-                      onMouseEnter={() => setActiveDropdown(item.label)}
-                      onMouseLeave={() => setActiveDropdown(null)}
-                      onClick={() => setActiveDropdown(activeDropdown === item.label ? null : item.label)}
+                      onClick={() => isOpen ? setActiveDropdown(null) : openMenu(item.label)}
                       className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-150"
-                      style={{ color: BRAND.charcoal }}
-                      onMouseEnterCapture={e => { e.currentTarget.style.color = BRAND.red; e.currentTarget.style.background = BRAND.redLight }}
-                      onMouseLeaveCapture={e => { e.currentTarget.style.color = BRAND.charcoal; e.currentTarget.style.background = "transparent" }}
-                      aria-expanded={activeDropdown === item.label}
+                      style={{
+                        color: isOpen ? BRAND.red : BRAND.charcoal,
+                        background: isOpen ? BRAND.redLight : "transparent",
+                      }}
+                      aria-expanded={isOpen}
                       aria-haspopup="true"
                     >
                       {item.label}
                       <IconChevronDown
-                        className={`transition-transform duration-200 ${activeDropdown === item.label ? "rotate-180" : ""}`}
+                        className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
                       />
                     </button>
-
-                    {/* Dropdown panel */}
-                    <div
-                      onMouseEnter={() => setActiveDropdown(item.label)}
-                      onMouseLeave={() => setActiveDropdown(null)}
-                      className={`
-                        absolute top-full left-0 pt-1.5
-                        transition-all duration-200 origin-top-left
-                        ${activeDropdown === item.label
-                          ? "opacity-100 scale-100 pointer-events-auto"
-                          : "opacity-0 scale-95 pointer-events-none"}
-                      `}
-                    >
-                      <div className="w-60 bg-white rounded-xl border border-slate-100 shadow-xl shadow-black/10 overflow-hidden">
-                        <div className="p-1.5">
-                          <a
-                            href={item.href}
-                            className="flex items-center px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-slate-400 rounded-lg transition-colors duration-150 hover:bg-slate-50"
-                            style={{ "--hover-color": BRAND.red }}
-                            onMouseEnter={e => e.currentTarget.style.color = BRAND.red}
-                            onMouseLeave={e => e.currentTarget.style.color = ""}
-                          >
-                            All Services →
-                          </a>
-                          <div className="h-px bg-slate-100 mx-2 my-1" />
-                          {item.children.map((child) => (
-                            <a
-                              key={child.label}
-                              href={child.href}
-                              className="flex flex-col px-3 py-2.5 rounded-lg transition-colors duration-150 group/item"
-                              onMouseEnter={e => e.currentTarget.style.background = BRAND.redLight}
-                              onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-                            >
-                              <span
-                                className="text-sm font-semibold transition-colors duration-150"
-                                style={{ color: BRAND.charcoal }}
-                              >
-                                {child.label}
-                              </span>
-                              <span className="text-xs text-slate-400 mt-0.5">{child.desc}</span>
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
                   </li>
                 )
               }
 
-              // Regular nav link
+              // Regular nav link — skip CTA (se renderiza fuera del ul)
+              if (item.isCta) return null
+
               return (
                 <li key={item.label}>
                   <a
@@ -369,6 +356,125 @@ function Navbar({ logoUrl }) {
               )
             })}
           </ul>
+
+          {/* ── Mega Menu Panel — sibling del ul, hijo directo del nav ── */}
+          {(() => {
+            const servicesItem = NAV_ITEMS.find(i => i.children)
+            const isOpen = activeDropdown === servicesItem?.label
+            if (!servicesItem) return null
+            return (
+              <div
+                onMouseEnter={() => openMenu(servicesItem.label)}
+                onMouseLeave={closeMenu}
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  zIndex: 9999,
+                  transition: "opacity .2s, transform .2s",
+                  opacity: isOpen ? 1 : 0,
+                  transform: isOpen ? "translateY(0)" : "translateY(-4px)",
+                  pointerEvents: isOpen ? "auto" : "none",
+                }}
+              >
+                <div style={{ height: "1px", background: "rgba(0,0,0,0.08)" }} />
+                <div style={{ background: "#ffffff", boxShadow: "0 20px 60px rgba(0,0,0,0.15)", borderTop: "3px solid #CC0000" }}>
+
+                  {/* Main grid */}
+                  <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "20px 32px" }}>
+                    <div style={{ display: "flex", gap: "12px", alignItems: "stretch" }}>
+
+                      {/* Service cards */}
+                      <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+                        {servicesItem.children.map((child) => (
+                          <a
+                            key={child.label}
+                            href={child.href}
+                            style={{ textDecoration: "none", display: "flex", flexDirection: "column", gap: "10px", padding: "14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.07)", background: "#ffffff", transition: "all .15s" }}
+                            onMouseEnter={e => { e.currentTarget.style.background = BRAND.redLight; e.currentTarget.style.borderColor = "rgba(204,0,0,0.25)" }}
+                            onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.borderColor = "rgba(0,0,0,0.07)" }}
+                          >
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                              <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "rgba(204,0,0,0.08)", border: "1px solid rgba(204,0,0,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                {child.icon}
+                              </div>
+                              <span style={{ fontSize: "13px", fontWeight: 800, color: BRAND.charcoal, fontFamily: "'Montserrat', sans-serif" }}>
+                                {child.label}
+                              </span>
+                            </div>
+                            <p style={{ fontSize: "12px", color: "rgba(0,0,0,0.48)", lineHeight: 1.55, margin: 0 }}>
+                              {child.desc}
+                            </p>
+                            <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", color: BRAND.red, display: "flex", alignItems: "center", gap: "4px", marginTop: "auto" }}>
+                              Learn more
+                              <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+
+                      {/* Divider */}
+                      <div style={{ width: "1px", background: "rgba(0,0,0,0.07)", flexShrink: 0 }} />
+
+                      {/* CTA panel */}
+                      <div style={{ width: "200px", flexShrink: 0, borderRadius: "10px", padding: "16px", background: `linear-gradient(135deg, ${BRAND.charcoal} 0%, #3a0000 55%, ${BRAND.red} 130%)`, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                        <div>
+                          <p style={{ fontSize: "9px", fontWeight: 900, letterSpacing: ".2em", textTransform: "uppercase", color: "rgba(255,255,255,.5)", marginBottom: "6px" }}>Ready to bid?</p>
+                          <p style={{ fontSize: "14px", fontWeight: 900, color: "#fff", lineHeight: 1.2, marginBottom: "8px", fontFamily: "'Montserrat', sans-serif" }}>
+                            On-site walk<br />
+                            <span style={{ color: "rgba(255,255,255,.6)" }}>within 72 hrs.</span>
+                          </p>
+                          <p style={{ fontSize: "11px", color: "rgba(255,255,255,.5)", lineHeight: 1.5 }}>
+                            Line-item bid in 5 business days.
+                          </p>
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "14px" }}>
+                          <a href="/contact-us"
+                            style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", background: "#fff", color: BRAND.red, borderRadius: "7px", textDecoration: "none" }}
+                            onMouseEnter={e => e.currentTarget.style.background = "#fff0f0"}
+                            onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+                          >
+                            Request a bid →
+                          </a>
+                          <a href={servicesItem.href}
+                            style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "7px", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", background: "rgba(255,255,255,.10)", color: "rgba(255,255,255,.75)", border: "1px solid rgba(255,255,255,.18)", borderRadius: "7px", textDecoration: "none" }}
+                            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,.18)"}
+                            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,.10)"}
+                          >
+                            All Services
+                          </a>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  {/* Bottom strip */}
+                  <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", background: "#F6F6F4" }}>
+                    <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "8px 32px", display: "flex", alignItems: "center", gap: "16px", overflowX: "auto" }}>
+                      <span style={{ fontSize: "10px", fontWeight: 800, letterSpacing: ".18em", textTransform: "uppercase", color: "rgba(0,0,0,0.28)", flexShrink: 0 }}>Serving:</span>
+                      {["Austin, TX", "Houston, TX", "Dallas–Fort Worth", "San Antonio, TX", "Oklahoma", "Louisiana", "Arkansas", "New Mexico"].map(loc => (
+                        <span key={loc} style={{ fontSize: "11px", fontWeight: 600, color: "rgba(0,0,0,0.40)", flexShrink: 0 }}>{loc}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            )
+          })()}
+
+          {/* CTA — right (desktop) */}
+          <a
+            href="/contact-us"
+            className="hidden lg:inline-flex items-center px-5 py-2.5 text-white text-sm font-bold rounded-lg active:scale-95 transition-all duration-150 shadow-sm shrink-0"
+            style={{ background: BRAND.red }}
+            onMouseEnter={e => e.currentTarget.style.background = BRAND.redDark}
+            onMouseLeave={e => e.currentTarget.style.background = BRAND.red}
+          >
+            Contact Us
+          </a>
 
           {/* Mobile hamburger */}
           <button
